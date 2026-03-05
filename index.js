@@ -36,23 +36,34 @@ app.post('/webhook', async (req, res) => {
     console.log('Received webhook event:', JSON.stringify(body, null, 2));
 
     if (body.object === 'page') {
-        body.entry.forEach(async (entry) => {
-            if (entry.changes) {
-                entry.changes.forEach(async (change) => {
+        // Safety check for entry
+        if (!body.entry || !Array.isArray(body.entry)) {
+            console.log('No entries found in webhook payload.');
+            return res.status(200).send('EVENT_RECEIVED');
+        }
+
+        for (const entry of body.entry) {
+            if (entry.changes && Array.isArray(entry.changes)) {
+                for (const change of entry.changes) {
                     console.log(`Checking change field: ${change.field}, item: ${change.value?.item}, verb: ${change.value?.verb}`);
-                    if (change.field === 'feed' && change.value.item === 'comment' && change.value.verb === 'add') {
+
+                    if (change.field === 'feed' && change.value?.item === 'comment' && change.value?.verb === 'add') {
                         const commentId = change.value.comment_id;
-                        const userId = change.value.from.id;
+                        const userId = change.value.from?.id;
                         const message = change.value.message;
                         const postId = change.value.post_id;
 
-                        await automation.handleNewComment(commentId, userId, message, postId);
+                        if (commentId && userId) {
+                            await automation.handleNewComment(commentId, userId, message, postId);
+                        } else {
+                            console.log('Missing commentId or userId, skipping.');
+                        }
                     } else {
                         console.log('Change is not a new comment, ignoring.');
                     }
-                });
+                }
             }
-        });
+        }
         res.status(200).send('EVENT_RECEIVED');
     } else {
         console.log(`Received non-page object: ${body.object}`);
