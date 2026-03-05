@@ -9,6 +9,11 @@ app.use(bodyParser.json());
 const PORT = process.env.PORT || 3000;
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
+app.get('/', (req, res) => {
+    res.status(200).send("hello world");
+});
+
+
 // Webhook Verification (GET)
 app.get('/webhook', (req, res) => {
     const mode = req.query['hub.mode'];
