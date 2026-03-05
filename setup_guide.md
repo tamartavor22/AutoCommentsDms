@@ -14,8 +14,9 @@ To get this automation running, you need to configure a Facebook App:
 - In the Webhooks product, select **Page** from the dropdown.
 - Click **Subscribe to this object**.
 - **Callback URL**: Your server URL (e.g., `https://your-domain.com/webhook` or your Ngrok URL).
-- **Verify Token**: Must match the `VERIFY_TOKEN` in your `.env` file.
-- Under **Page Events**, subscribe to `feed` and `mentions`.
+- **Verify Token**: Must match the `VERIFY_TOKEN` in your Vercel Environment Variables.
+- Under **Page Events**, subscribe to **feed**. (This is the most important one for comments).
+- *Note: If 'mentions' is not available in your version, 'feed' is sufficient for catching comments on your posts.*
 
 ### 4. Get Page Access Token
 - Go to **App Settings** -> **Basic** to get your App Secret.

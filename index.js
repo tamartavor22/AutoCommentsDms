@@ -42,11 +42,12 @@ app.post('/webhook', async (req, res) => {
                         const commentId = change.value.comment_id;
                         const userId = change.value.from.id;
                         const message = change.value.message;
+                        const postId = change.value.post_id;
 
                         // Avoid responding to the page's own comments or replies to its own comments
                         // Note: In production, you'd check if change.value.from.id is YOUR page ID.
 
-                        await automation.handleNewComment(commentId, userId, message);
+                        await automation.handleNewComment(commentId, userId, message, postId);
                     }
                 });
             }
