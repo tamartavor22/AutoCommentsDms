@@ -13,6 +13,14 @@ app.get('/', (req, res) => {
     res.status(200).send("hello world");
 });
 
+app.get('/privacy', (req, res) => {
+    res.sendFile(__dirname + '/privacy.html');
+});
+
+app.get('/tos', (req, res) => {
+    res.sendFile(__dirname + '/tos.html');
+});
+
 
 // Webhook Verification (GET)
 app.get('/webhook', (req, res) => {
