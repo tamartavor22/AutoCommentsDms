@@ -21,6 +21,23 @@ app.get('/tos', (req, res) => {
     res.sendFile(__dirname + '/tos.html');
 });
 
+app.get('/debug/token', async (req, res) => {
+    const facebookApi = require('./facebookApi');
+    const result = await facebookApi.debugToken();
+    if (result.valid) {
+        res.status(200).json({
+            status: "Token is VALID",
+            pageName: result.data.name,
+            pageId: result.data.id
+        });
+    } else {
+        res.status(401).json({
+            status: "Token is INVALID or EXPIRED",
+            error: result.error
+        });
+    }
+});
+
 
 // Webhook Verification (GET)
 app.get('/webhook', (req, res) => {

@@ -20,11 +20,17 @@ To get this automation running, you need to configure a Facebook App:
 
 ### 4. Get Page Access Token
 - Go to **App Settings** -> **Basic** to get your App Secret.
-- Go to the **Graph API Explorer**.
-- Select your App.
-- Under **User or Page**, select your Page.
-- Add permissions: `pages_manage_metadata`, `pages_manage_posts`, `pages_manage_engagement`, `pages_messaging`.
-- Generate the Token and copy it to `PAGE_ACCESS_TOKEN` in `.env`.
+- Go to the **[Graph API Explorer](https://developers.facebook.com/tools/explorer/)**.
+- **APP**: Select your current App.
+- **User or Page**: Click the dropdown and select **your Page** (NOT "User Token").
+- **Add Permissions**: Ensure these are selected:
+  - `pages_manage_metadata`
+  - `pages_manage_posts`
+  - `pages_manage_engagement`
+  - `pages_messaging`
+- Click **Generate Token**.
+- Copy this token to `PAGE_ACCESS_TOKEN` in your environment variables.
+- **Tip**: You can verify the token status by visiting `https://your-domain.com/debug/token` once deployed.
 
 ### 5. Deployment
 - Install dependencies: `npm install`

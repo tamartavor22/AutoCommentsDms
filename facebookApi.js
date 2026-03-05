@@ -52,6 +52,26 @@ const facebookApi = {
         } catch (error) {
             console.error('Error sending DM:', error.response?.data || error.message);
         }
+    },
+
+    async debugToken() {
+        try {
+            const response = await axios.get(`${BASE_URL}/me`, {
+                params: {
+                    access_token: PAGE_ACCESS_TOKEN,
+                    fields: 'id,name'
+                }
+            });
+            return {
+                valid: true,
+                data: response.data
+            };
+        } catch (error) {
+            return {
+                valid: false,
+                error: error.response?.data || error.message
+            };
+        }
     }
 };
 
