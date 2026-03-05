@@ -33,27 +33,29 @@ app.get('/webhook', (req, res) => {
 // Webhook Event Listener (POST)
 app.post('/webhook', async (req, res) => {
     const body = req.body;
+    console.log('Received webhook event:', JSON.stringify(body, null, 2));
 
     if (body.object === 'page') {
         body.entry.forEach(async (entry) => {
             if (entry.changes) {
                 entry.changes.forEach(async (change) => {
+                    console.log(`Checking change field: ${change.field}, item: ${change.value?.item}, verb: ${change.value?.verb}`);
                     if (change.field === 'feed' && change.value.item === 'comment' && change.value.verb === 'add') {
                         const commentId = change.value.comment_id;
                         const userId = change.value.from.id;
                         const message = change.value.message;
                         const postId = change.value.post_id;
 
-                        // Avoid responding to the page's own comments or replies to its own comments
-                        // Note: In production, you'd check if change.value.from.id is YOUR page ID.
-
                         await automation.handleNewComment(commentId, userId, message, postId);
+                    } else {
+                        console.log('Change is not a new comment, ignoring.');
                     }
                 });
             }
         });
         res.status(200).send('EVENT_RECEIVED');
     } else {
+        console.log(`Received non-page object: ${body.object}`);
         res.sendStatus(404);
     }
 });
