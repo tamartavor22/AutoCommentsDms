@@ -17,7 +17,7 @@ const responses = {
 
     // Example of post-specific messages
     // To use this, find your Post ID in Facebook and add it here.
-    "1234567890": {
+    "1FAAPg9qKb": {
         publicReply: "איזה כיף! שולחת לך בפרטי",
         dms: [
             `https://youtu.be/KSfuyg83kFA
