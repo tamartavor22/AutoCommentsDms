@@ -72,6 +72,25 @@ const facebookApi = {
                 error: error.response?.data || error.message
             };
         }
+    },
+
+    async getSubscriptionStatus(pageId) {
+        try {
+            const response = await axios.get(`${BASE_URL}/${pageId}/subscribed_apps`, {
+                params: {
+                    access_token: PAGE_ACCESS_TOKEN
+                }
+            });
+            return {
+                valid: true,
+                subscriptions: response.data.data
+            };
+        } catch (error) {
+            return {
+                valid: false,
+                error: error.response?.data || error.message
+            };
+        }
     }
 };
 

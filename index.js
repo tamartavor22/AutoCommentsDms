@@ -24,11 +24,19 @@ app.get('/tos', (req, res) => {
 app.get('/debug/token', async (req, res) => {
     const facebookApi = require('./facebookApi');
     const result = await facebookApi.debugToken();
+
     if (result.valid) {
+        const subResult = await facebookApi.getSubscriptionStatus(result.data.id);
+
         res.status(200).json({
             status: "Token is VALID",
             pageName: result.data.name,
-            pageId: result.data.id
+            pageId: result.data.id,
+            subscriptionStatus: subResult.valid ? subResult.subscriptions : "Error checking subscriptions",
+            subscriptionError: subResult.valid ? null : subResult.error,
+            help: subResult.valid && subResult.subscriptions.length === 0
+                ? "Your page is not subscribed to the app! Go to Webhooks in Meta dashboard and click 'Subscribe' for the 'feed' object."
+                : "If subscriptions appear but no logs show, check your Vercel Logs dashboard."
         });
     } else {
         res.status(401).json({
